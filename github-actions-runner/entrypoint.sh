@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 
 set -o pipefail
-
-client_id=$CLIENT_ID
-
+set -x
+client_id=$clientID
 pem=$PRIVATE_CERT
+
+echo "client_id: $client_id"
+echo "AppID: $applicationID"
+echo "installationID: $installationID"
+echo "pem: $pem"
 
 now=$(date +%s)
 iat=$((${now} - 60)) # Issues 60 seconds in the past
@@ -26,6 +30,8 @@ payload_json="{
 }"
 # Payload encode
 payload=$( echo -n "${payload_json}" | b64enc )
+echo "payload: $payload"
+
 
 # Signature
 header_payload="${header}"."${payload}"
@@ -33,6 +39,7 @@ signature=$(
     openssl dgst -sha256 -sign <(echo -n "${pem}") \
     <(echo -n "${header_payload}") | b64enc
 )
+echo "signature: $signature"
 
 # Create JWT
 JWT="${header_payload}"."${signature}"
