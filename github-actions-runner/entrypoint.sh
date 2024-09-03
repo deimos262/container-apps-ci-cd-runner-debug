@@ -35,24 +35,27 @@ echo "payload: $payload"
 echo -n "${pem}" > /tmp/private_key.pem
 echo -n "${header}.${payload}" > /tmp/header_payload.txt
 
+echo "cat pem"
 cat /tmp/private_key.pem
+echo "----------------"
 cat /tmp/header_payload.txt
-
-# Signature
-header_payload="${header}"."${payload}"
-signature=$(
-    openssl dgst -sha256 -sign /tmp/private_key.pem \
-    /tmp/header_payload.txt | b64enc
-)
-
-
+echo "----------------"
 
 # Signature
 #header_payload="${header}"."${payload}"
 #signature=$(
-#    openssl dgst -sha256 -sign <(echo -n "${pem}") \
-#    <(echo -n "${header_payload}") | b64enc
+#    openssl dgst -sha256 -sign /tmp/private_key.pem \
+#    /tmp/header_payload.txt | b64enc
 #)
+
+
+
+# Signature
+header_payload="${header}"."${payload}"
+signature=$(
+    openssl dgst -sha256 -sign <(echo -n "${pem}") \
+    <(echo -n "${header_payload}") | b64enc
+)
 echo "signature: $signature"
 
 # Create JWT
