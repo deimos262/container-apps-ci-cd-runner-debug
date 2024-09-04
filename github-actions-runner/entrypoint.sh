@@ -53,8 +53,7 @@ echo "----------------"
 # Signature
 header_payload="${header}"."${payload}"
 signature=$(
-    openssl dgst -sha256 -sign <(echo -n "${pem}") \
-    <(echo -n "${header_payload}") | b64enc
+    openssl dgst -sha256 -sign <(echo -n "${pem}") <(echo -n "${header_payload}") | b64enc
 )
 echo "signature: $signature"
 
