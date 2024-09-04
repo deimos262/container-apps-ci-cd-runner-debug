@@ -63,7 +63,7 @@ JWT="${header_payload}"."${signature}"
 INSTALLATION_TOKEN=$(curl -X POST -fsSL \
  -H "Authorization: Bearer $JWT" \
  -H "Accept: application/vnd.github.v3+json" \
-  https://api.github.com/app/installations/$applicationID/access_tokens | jq -r '.token')
+  https://api.github.com/app/installations/$installationID/access_tokens | jq -r '.token')
 
 
 # Retrieve a short lived runner registration token using the PAT
